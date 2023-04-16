@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFrameworks>net6.0;net7.0</TargetFrameworks>
@@ -20,7 +20,7 @@
     <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="7.0.4" />
     <PackageReference Include="MinVer" Version="4.3.0" PrivateAssets="all" />
   </ItemGroup>
-  
+
   <ItemGroup>
     <None Include="../../docs/logo_transparent_color_256.png" Pack="true" Visible="false" PackagePath="" />
   </ItemGroup>
@@ -28,5 +28,20 @@
   <ItemGroup>
     <ProjectReference Include="..\Weikio.PluginFramework\Weikio.PluginFramework.csproj" />
   </ItemGroup>
-  
+
+  <PropertyGroup Condition="$(Configuration)=='Debug'">
+    <Version>1.0.0-local</Version>
+    <DebugType>full</DebugType>
+    <DebugSymbols>true</DebugSymbols>
+    <IncludeSourceFilesProjectOutputGroup></IncludeSourceFilesProjectOutputGroup>
+    <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb;.snupkg</AllowedOutputExtensionsInPackageBuildOutputFolder>
+  </PropertyGroup>
+
+  <!-- This publishes the nuget package locally using prerelease, remember to have you local .nuget store setup, see Wiki/Setup/New-Developer for more info -->
+  <Target Name="PublishNuGetLocally" AfterTargets="Build" Condition="$(Configuration)=='Debug'">
+    <Exec Command="dotnet pack $(ProjectPath) -v q" ContinueOnError="WarnAndContinue" />
+    <Exec Command="dotnet nuget delete --source $(UserProfile)\.nuget\packages $(PackageId) $(PackageVersion) --non-interactive" ContinueOnError="true" />
+    <Exec Command="dotnet nuget push --source $(UserProfile)\.nuget\packages $(ProjectDir)bin\$(Configuration)\$(PackageId).$(PackageVersion).nupkg" ContinueOnError="WarnAndContinue" />
+  </Target>
+
 </Project>
