@@ -24,7 +24,7 @@
     <PackageReference Include="System.Reflection.MetadataLoadContext" Version="7.0.0" />
     <PackageReference Include="Microsoft.Extensions.Logging" Version="7.0.0" />
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.5.0" />
-    <PackageReference Include="Weikio.TypeGenerator" Version="1.4.2-alpha.0.1" />
+    <PackageReference Include="Weikio.TypeGenerator" Version="1.0.0-alpha.0.21" />
   </ItemGroup>
 
   <ItemGroup>
